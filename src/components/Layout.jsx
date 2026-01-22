@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import './Layout.css';
 
 const Layout = ({ children }) => {
     const { user, logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const location = useLocation();
 
     const isActive = (path) => location.pathname === path ? 'active' : '';
@@ -16,7 +18,9 @@ const Layout = ({ children }) => {
                 <div className="sidebar-logo">Employment Management System - Personal</div>
                 <nav>
                     <Link to="/" className={`nav-item ${isActive('/')}`}>Dashboard</Link>
-                    <Link to="/departments" className={`nav-item ${isActive('/departments')}`}>Departments</Link>
+                    {user.role !== 'Employee' && (
+                        <Link to="/departments" className={`nav-item ${isActive('/departments')}`}>Departments</Link>
+                    )}
                     {(user.role === 'Admin') && (
                         <Link to="/logs" className={`nav-item ${isActive('/logs')}`}>Audit Logs</Link>
                     )}
@@ -27,11 +31,19 @@ const Layout = ({ children }) => {
             <main className="main-content">
                 <header className="top-header">
                     <h2 style={{ fontSize: '1.25rem' }}>
-                        {location.pathname === '/' ? 'Dashboard' : 
-                         location.pathname.startsWith('/departments') ? 'Departments' :
-                         location.pathname.startsWith('/logs') ? 'Audit Logs' : 'Overview'}
+                        {location.pathname === '/' ? 'Dashboard' :
+                            location.pathname.startsWith('/departments') ? 'Departments' :
+                                location.pathname.startsWith('/logs') ? 'Audit Logs' : 'Overview'}
                     </h2>
                     <div className="user-profile">
+                        <button
+                            onClick={toggleTheme}
+                            className="btn btn-ghost"
+                            style={{ marginRight: '1rem', fontSize: '1.2rem', padding: '0.4rem' }}
+                            title="Toggle Theme"
+                        >
+                            {theme === 'light' ? '🌙' : '☀️'}
+                        </button>
                         <div className="avatar">
                             {user.username.charAt(0).toUpperCase()}
                         </div>

@@ -1,4 +1,4 @@
-const { User, Role } = require('../models');
+const { User, Role, Employee } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -52,7 +52,23 @@ class AuthService {
             { expiresIn: '1h' }
         );
 
-        return { token, user: { id: user.id, username: user.username, role: user.Role.name } };
+        let employeeId = null;
+        if (user.Role.name === 'Employee') {
+            const employee = await Employee.findOne({ where: { user_id: user.id } });
+            if (employee) {
+                employeeId = employee.id;
+            }
+        }
+
+        return {
+            token,
+            user: {
+                id: user.id,
+                username: user.username,
+                role: user.Role.name,
+                employeeId
+            }
+        };
     }
 }
 

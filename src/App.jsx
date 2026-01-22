@@ -3,8 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import EmployeeDashboard from './pages/EmployeeDashboard';
 import Departments from './pages/Departments';
 import AuditLogs from './pages/AuditLogs';
+
+const DashboardWrapper = () => {
+  const { user } = useAuth();
+  return user?.role === 'Employee' ? <EmployeeDashboard /> : <Dashboard />;
+};
 
 const PrivateRoute = ({ children, roles }) => {
   const { user, loading } = useAuth();
@@ -18,43 +24,47 @@ const PrivateRoute = ({ children, roles }) => {
   return children;
 };
 
+import { ThemeProvider } from './context/ThemeContext';
+
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
 
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <DashboardWrapper />
+                </PrivateRoute>
+              }
+            />
 
-          <Route
-            path="/departments"
-            element={
-              <PrivateRoute>
-                <Departments />
-              </PrivateRoute>
-            }
-          />
+            <Route
+              path="/departments"
+              element={
+                <PrivateRoute>
+                  <Departments />
+                </PrivateRoute>
+              }
+            />
 
-          <Route
-            path="/logs"
-            element={
-              <PrivateRoute roles={['Admin']}>
-                <AuditLogs />
-              </PrivateRoute>
-            }
-          />
+            <Route
+              path="/logs"
+              element={
+                <PrivateRoute roles={['Admin']}>
+                  <AuditLogs />
+                </PrivateRoute>
+              }
+            />
 
-        </Routes>
-      </Router>
-    </AuthProvider>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

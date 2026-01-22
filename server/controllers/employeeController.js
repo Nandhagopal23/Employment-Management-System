@@ -58,6 +58,32 @@ class EmployeeController {
             next(error);
         }
     }
+    async updateProfile(req, res, next) {
+        try {
+            // Find employee linked to the logged-in user
+            // req.user.id is the User ID. We need to find the employee with this user_id
+            // This logic should ideally be in service, but for brevity:
+            const { Employee } = require('../models');
+            const employee = await Employee.findOne({ where: { user_id: req.user.id } });
+
+            if (!employee) {
+                return res.status(404).json({ error: 'Employee profile not found' });
+            }
+
+            // Update allowed fields only (Phone, maybe address if we had it. Not Salary/Designation)
+            const allowedUpdates = {
+                phone: req.body.phone,
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
+            };
+
+            const updated = await employeeService.updateEmployee(employee.id, allowedUpdates);
+            await auditService.log('UPDATE', 'Employee', employee.id, req.user.id, { updates: allowedUpdates });
+            res.json(updated);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new EmployeeController();

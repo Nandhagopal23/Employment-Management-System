@@ -20,10 +20,25 @@ app.get('/', (req, res) => {
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
+    // console.error(err.stack); // Keep stack trace for debugging if needed
+
+    if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
+        return res.status(400).json({
+            error: 'Database Validation Error',
+            messages: err.errors.map(e => e.message)
+        });
+    }
+
+    if (err.isJoi) { // Should be caught by middleware, but safeguard
+        return res.status(400).json({
+            error: 'Validation Error',
+            messages: err.details.map(d => d.message)
+        });
+    }
+
     res.status(500).json({
         error: 'Internal Server Error',
-        message: process.env.NODE_ENV === 'development' ? err.message : undefined
+        message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
     });
 });
 

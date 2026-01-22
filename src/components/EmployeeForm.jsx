@@ -10,7 +10,11 @@ const EmployeeForm = ({ employee, onSave, onCancel }) => {
         designation: '',
         salary: '',
         department_id: '',
-        status: 'Active'
+
+        status: 'Active',
+        create_login: false,
+        username: '',
+        password: ''
     });
     const [departments, setDepartments] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -27,7 +31,9 @@ const EmployeeForm = ({ employee, onSave, onCancel }) => {
                 designation: employee.designation,
                 salary: employee.salary,
                 department_id: employee.department_id,
-                status: employee.status
+                status: employee.status,
+                username: employee.Account?.username || '',
+                create_login: false // Default to unchecked, user must opt-in to change
             });
         }
     }, [employee]);
@@ -42,7 +48,8 @@ const EmployeeForm = ({ employee, onSave, onCancel }) => {
     };
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        setFormData({ ...formData, [e.target.name]: value });
     };
 
     const handleSubmit = async (e) => {
@@ -58,7 +65,10 @@ const EmployeeForm = ({ employee, onSave, onCancel }) => {
             }
             onSave(); // Refresh parent
         } catch (err) {
-            setError(err.response?.data?.error || 'Operation failed');
+            const msg = err.response?.data?.messages
+                ? err.response.data.messages.join(', ')
+                : (err.response?.data?.error || 'Operation failed');
+            setError(msg);
         } finally {
             setLoading(false);
         }
@@ -113,13 +123,61 @@ const EmployeeForm = ({ employee, onSave, onCancel }) => {
                 </div>
             </div>
 
+
+
+            <div style={{ marginBottom: '1.5rem', background: 'var(--pk-bg)', padding: '1rem', borderRadius: 'var(--pk-radius)' }}>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500 }}>
+                        <input
+                            type="checkbox"
+                            name="create_login"
+                            checked={formData.create_login}
+                            onChange={handleChange}
+                            style={{ width: '1rem', height: '1rem' }}
+                        />
+                        {employee?.Account
+                            ? "Change Login Credentials"
+                            : "Create Login Credentials for Employee"}
+                    </label>
+                </div>
+
+                {formData.create_login && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem' }}>Username</label>
+                            <input
+                                className="input-field"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                required={formData.create_login}
+                                placeholder={employee?.Account?.username || ''}
+                            />
+                        </div>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem' }}>Password</label>
+                            <input
+                                className="input-field"
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required={formData.create_login}
+                                minLength="6"
+                                placeholder={employee?.Account ? "New Password" : ""}
+                            />
+                        </div>
+                    </div>
+                )}
+            </div>
+
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                 <button type="button" onClick={onCancel} className="btn" style={{ background: 'transparent', border: '1px solid var(--pk-border)' }}>Cancel</button>
                 <button type="submit" className="btn btn-primary" disabled={loading}>
                     {loading ? 'Saving...' : (employee ? 'Update Employee' : 'Create Employee')}
                 </button>
             </div>
-        </form>
+        </form >
     );
 };
 

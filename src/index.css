@@ -33,6 +33,25 @@
   --spacing-4: 2rem;
 }
 
+:root[data-theme='dark'] {
+  --pk-bg: #0f172a; /* Slate 900 */
+  --pk-surface: #1e293b; /* Slate 800 */
+  --pk-surface-hover: #334155; /* Slate 700 */
+
+  --pk-primary: #f8fafc; /* Slate 50 (Inverted for visibility) */
+  --pk-accent: #60a5fa; /* Blue 400 */
+
+  --pk-text-main: #f1f5f9; /* Slate 100 */
+  --pk-text-muted: #94a3b8; /* Slate 400 */
+  --pk-text-light: #475569; /* Slate 600 */
+
+  --pk-border: #334155; /* Slate 700 */
+  --pk-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+
+  --pk-success: #34d399;
+  --pk-danger: #f87171;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             Employee.belongsTo(models.Department, { foreignKey: 'department_id' });
             Employee.belongsTo(models.User, { foreignKey: 'created_by', as: 'Creator' });
+            Employee.belongsTo(models.User, { foreignKey: 'user_id', as: 'Account' });
         }
     }
     Employee.init({
@@ -52,6 +53,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         created_by: {
             type: DataTypes.INTEGER,
+            references: {
+                model: 'Users',
+                key: 'id'
+            }
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
             references: {
                 model: 'Users',
                 key: 'id'

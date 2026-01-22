@@ -6,6 +6,10 @@ class EmployeeService {
         if (existing) {
             throw new Error('Employee with this email already exists');
         }
+
+        // Logic handled in repository for transaction safety usually, 
+        // but let's keep it simple or delegate to repository.
+        // We'll pass the full data object including create_login flag to repository.
         return employeeRepository.create(data);
     }
 
@@ -14,7 +18,13 @@ class EmployeeService {
     }
 
     async getEmployeeById(id) {
-        const employee = await employeeRepository.getById(id, { include: ['Department'] }); // include association string or model
+        const { Department, User } = require('../models');
+        const employee = await employeeRepository.getById(id, {
+            include: [
+                { model: Department },
+                { model: User, as: 'Account', attributes: ['id', 'username'] }
+            ]
+        });
         if (!employee) {
             throw new Error('Employee not found');
         }
