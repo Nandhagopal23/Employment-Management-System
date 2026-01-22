@@ -1,0 +1,74 @@
+.layout-container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+}
+
+.sidebar {
+    /* No background, no border, just sits on the page bg */
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-logo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    color: var(--pk-primary);
+    opacity: 0.9;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    color: var(--pk-text-muted);
+    text-decoration: none;
+    border-radius: var(--pk-radius);
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.nav-item:hover {
+    color: var(--pk-primary);
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.nav-item.active {
+    color: var(--pk-primary);
+    background-color: white;
+    box-shadow: var(--pk-shadow);
+    font-weight: 600;
+}
+
+.main-content {
+    padding: 2rem;
+    /* Main content area also transparent/flat */
+    overflow-y: auto;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 0;
+    /* Removed border-bottom for cleaner look */
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.avatar {
+    background: transparent;
+    color: var(--pk-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    /* Text only avatar */
+}

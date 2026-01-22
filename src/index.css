@@ -1,0 +1,224 @@
+:root {
+  /* Colors - Ultra Clean */
+  --pk-bg: #f9fafb;
+  /* Very light gray (almost white) */
+  --pk-surface: #ffffff;
+  /* Pure White */
+  --pk-surface-hover: #f3f4f6;
+
+  --pk-primary: #1e293b;
+  /* Soft Black/Slate */
+  --pk-accent: #3b82f6;
+  /* Blue for primary actions only */
+
+  --pk-text-main: #334155;
+  /* Slate-700 (Softer than black) */
+  --pk-text-muted: #94a3b8;
+  /* Slate-400 */
+  --pk-text-light: #cbd5e1;
+
+  --pk-border: #f1f5f9;
+  /* Extremely subtle border */
+  --pk-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  /* Micro shadow */
+
+  --pk-success: #34d399;
+  --pk-danger: #f87171;
+
+  /* Spacing & Layout */
+  --pk-radius: 6px;
+  --spacing-1: 0.5rem;
+  --spacing-2: 1rem;
+  --spacing-3: 1.5rem;
+  --spacing-4: 2rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--pk-bg);
+  color: var(--pk-text-main);
+  line-height: 1.6;
+  font-size: 15px;
+  /* Slightly larger for readability */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Utilities */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: var(--pk-surface);
+  border-radius: var(--pk-radius);
+  padding: var(--spacing-4);
+  box-shadow: var(--pk-shadow);
+  /* No border for cleaner look */
+}
+
+/* Buttons: Flatter, simpler */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--pk-radius);
+  border: 1px solid transparent;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--pk-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0f172a;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--pk-text-muted);
+}
+
+.btn-ghost:hover {
+  background: var(--pk-surface-hover);
+  color: var(--pk-text-main);
+}
+
+/* Natural Theme Buttons: Hover Colors Only */
+.btn-edit {
+  background-color: transparent;
+  color: var(--pk-text-muted);
+  transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+  background-color: #eff6ff;
+  /* Blue-50 */
+  color: #2563eb;
+  /* Blue-600 */
+}
+
+.btn-delete {
+  background-color: transparent;
+  color: var(--pk-text-muted);
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background-color: #fef2f2;
+  /* Red-50 */
+  color: #dc2626;
+  /* Red-600 */
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background: var(--pk-bg);
+  border: 1px solid transparent;
+  /* No border initially */
+  border-radius: var(--pk-radius);
+  color: var(--pk-text-main);
+  font-size: 0.9rem;
+  outline: none;
+  transition: background-color 0.2s;
+}
+
+.input-field:hover {
+  background: #f1f5f9;
+}
+
+.input-field:focus {
+  background: #ffffff;
+  box-shadow: 0 0 0 2px var(--pk-border);
+}
+
+/* Table: Cleanest possible */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--pk-border);
+  color: var(--pk-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--pk-border);
+  color: var(--pk-text-main);
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover {
+  background-color: #fcfcfc;
+}
+
+/* Badges: Soft circles */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-active {
+  background-color: #ecfdf5;
+  color: #059669;
+  /* Green */
+}
+
+.badge-inactive {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  /* Red */
+}
+
+.badge-onleave {
+  background-color: #fffbeb;
+  color: #d97706;
+  /* Yellow */
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
